@@ -19,8 +19,7 @@ This system makes sure that all medical data and alerts are correctly matched wi
 important in order to maintain data integrity and privacy.
 
 Data Access Layer:
-The Data access layer includes multiple listener classes such as the TCPListener, WebSocketListener, ConsoleListener, 
-and FileDataListener each implementing the DataListener interface. These listeners are each made to receive data through 
-specific protocols, ensuring correct and accurate data listening from multiple sources. They play an important role in 
-sending this data into the DataStorage, they provide a continuous and reliable way for data to travel which is essential 
-for the system's operations.
+The Data access layer includes multiple listener classes such as the TCPListener, WebSocketListener, and FileDataListener 
+each implementing the DataListener interface. These listeners are each made to receive data through specific protocols, 
+ensuring correct and accurate data listening from multiple sources. They play an important role in sending this data into 
+the DataStorage, they provide a continuous and reliable way for data to travel which is essential for the system's operations.
