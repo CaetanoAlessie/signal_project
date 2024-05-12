@@ -1,1 +1,26 @@
-.
+Alert Generation System:
+This system works around the AlertGenerator which monitors patient data such as heart rate and blood 
+pressure from the DataStorage class. It checks this data with predefined limits and if they go over those 
+limits it creates an Alert object detailing the alert. The Alert contains information like patient ID, the specific 
+medical condition, and the time of the alert. These alerts are managed by the AlertManager, which is responsible 
+for making sure that alerts are quickly sent to the medical staff for them to care of.
+
+Data Storage System:
+At the center of the data storage system is the DataStorage class which keeps PatientData, a class containing 
+individual patient metrics and timestamps. DataStorage can use methods such as retrieval, storage, and deletion of 
+data, making it possible to access to patient information in real time, which is important for constantly monitoring 
+patients. The PatientRecord class holds details such as name, date of birth, and medical history which is accessible 
+through the Retriever class which gets this data from DataStorage.
+
+Patient Identification System:
+Patient identification is handled by the IdentityManager and PatientIdentifier. The IdentityManager verifies the 
+authenticity of patient IDs given by the PatientIdentifier which matches incoming data to the existing patient records. 
+This system makes sure that all medical data and alerts are correctly matched with the correct patient. This is 
+important in order to maintain data integrity and privacy.
+
+Data Access Layer:
+The Data access layer includes multiple listener classes such as the TCPListener, WebSocketListener, ConsoleListener, 
+and FileDataListener each implementing the DataListener interface. These listeners are each made to receive data through 
+specific protocols, ensuring correct and accurate data listening from multiple sources. They play an important role in 
+sending this data into the DataStorage, they provide a continuous and reliable way for data to travel which is essential 
+for the system's operations.
