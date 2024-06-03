@@ -52,6 +52,69 @@ public class Patient {
      *         range
      */
     public List<PatientRecord> getRecords(long startTime, long endTime) {
-        // TODO Implement and test this method
+        List<PatientRecord> recordsInRange = new ArrayList<>();
+
+        for (PatientRecord record : patientRecords) {
+            long recordTimestamp = record.getTimestamp();
+
+            // Check if the record's timestamp falls within the specified range
+            if (recordTimestamp >= startTime && recordTimestamp <= endTime) {
+                recordsInRange.add(record);
+            }
+        }
+
+        return recordsInRange;
+    }
+
+    public List<Integer> getSystolicBloodPressureReadings() {
+        List<Integer> systolicReadings = new ArrayList<>();
+
+        for (PatientRecord record : patientRecords) {
+            if (record.getRecordType().equalsIgnoreCase("SystolicBloodPressure")) {
+                systolicReadings.add((int) record.getMeasurementValue());
+            }
+        }
+
+        return systolicReadings;
+    }
+
+    public List<Integer> getDiastolicBloodPressureReadings() {
+        List<Integer> diastolicReadings = new ArrayList<>();
+
+        for (PatientRecord record : patientRecords) {
+            if (record.getRecordType().equalsIgnoreCase("DiastolicBloodPressure")) {
+                diastolicReadings.add((int) record.getMeasurementValue());
+            }
+        }
+
+        return diastolicReadings;
+    }
+
+    public List<Integer> getBloodOxygenSaturationReadings() {
+        List<Integer> saturationReadings = new ArrayList<>();
+
+        for (PatientRecord record : patientRecords) {
+            if (record.getRecordType().equalsIgnoreCase("BloodOxygenSaturation")) {
+                saturationReadings.add((int) record.getMeasurementValue());
+            }
+        }
+
+        return saturationReadings;
+    }
+
+    public List<Integer> getECGDataReadings() {
+        List<Integer> ecgReadings = new ArrayList<>();
+
+        for (PatientRecord record : patientRecords) {
+            if (record.getRecordType().equalsIgnoreCase("ECGData")) {
+                ecgReadings.add((int) record.getMeasurementValue());
+            }
+        }
+
+        return ecgReadings;
+    }
+
+    public int getPatientId() {
+        return patientId;
     }
 }
