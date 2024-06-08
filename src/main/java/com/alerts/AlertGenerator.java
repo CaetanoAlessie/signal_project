@@ -1,7 +1,10 @@
 package com.alerts;
 
+import java.util.*;
+
 import com.data_management.DataStorage;
 import com.data_management.Patient;
+import com.data_management.PatientRecord;
 
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data
@@ -24,6 +27,12 @@ public class AlertGenerator {
         this.dataStorage = dataStorage;
     }
 
+    public void evaluateAllPatients() {
+        for (Patient patient : dataStorage.getAllPatients()) {
+            evaluateData(patient);
+        }
+    }
+
     /**
      * Evaluates the specified patient's data to determine if any alert conditions
      * are met. If a condition is met, an alert is triggered via the
@@ -35,7 +44,87 @@ public class AlertGenerator {
      * @param patient the patient data to evaluate for alert conditions
      */
     public void evaluateData(Patient patient) {
-        // Implementation goes here
+        checkBloodPressureAlerts(patient);
+        checkBloodSaturationAlerts(patient);
+        checkHypotensiveHypoxemiaAlert(patient);
+        checkECGAlerts(patient);
+    }
+
+    private void checkBloodPressureAlerts(Patient patient) {
+        List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
+        int count = 0;
+        double lastValue = 0;
+        for (PatientRecord record : records) {
+            if (record.getRecordType().equals("Blood Pressure")) {
+                double currentValue = record.getMeasurementValue();
+                if (count > 0 && Math.abs(currentValue - lastValue) > 10) {
+                    count++;
+                } else {
+                    count = 1;
+                }
+                lastValue = currentValue;
+                if (count == 3) {
+                    triggerAlert(new Alert(String.valueOf(patient.getId()), "Blood Pressure Trend Alert", System.currentTimeMillis()));
+                    count = 0;
+                }
+                if (currentValue > 180 || currentValue < 90) {
+                    triggerAlert(new Alert(String.valueOf(patient.getId()), "Blood Pressure Critical Threshold Alert", System.currentTimeMillis()));
+                }
+            }
+        }
+    }
+
+    private void checkBloodSaturationAlerts(Patient patient) {
+        List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
+        for (PatientRecord record : records) {
+            if (record.getRecordType().equals("Blood Saturation")) {
+                double currentValue = record.getMeasurementValue();
+                if (currentValue < 92) {
+                    triggerAlert(new Alert(String.valueOf(patient.getId()), "Low Saturation Alert", System.currentTimeMillis()));
+                }
+            }
+        }
+    }
+
+    private void checkHypotensiveHypoxemiaAlert(Patient patient) {
+        List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
+        boolean lowBloodPressure = false;
+        boolean lowSaturation = false;
+        for (PatientRecord record : records) {
+            if (record.getRecordType().equals("Blood Pressure")) {
+                if (record.getMeasurementValue() < 90) {
+                    lowBloodPressure = true;
+                }
+            }
+            if (record.getRecordType().equals("Blood Saturation")) {
+                if (record.getMeasurementValue() < 92) {
+                    lowSaturation = true;
+                }
+            }
+        }
+        if (lowBloodPressure && lowSaturation) {
+            triggerAlert(new Alert(String.valueOf(patient.getId()), "Hypotensive Hypoxemia Alert", System.currentTimeMillis()));
+        }
+    }
+
+    private void checkECGAlerts(Patient patient) {
+        List<PatientRecord> records = patient.getRecords(0, Long.MAX_VALUE);
+        double sum = 0;
+        int count = 0;
+        for (PatientRecord record : records) {
+            if (record.getRecordType().equals("ECG")) {
+                sum += record.getMeasurementValue();
+                count++;
+            }
+        }
+        double average = sum / count;
+        for (PatientRecord record : records) {
+            if (record.getRecordType().equals("ECG")) {
+                if (record.getMeasurementValue() > average * 1.5) {
+                    triggerAlert(new Alert(String.valueOf(patient.getId()), "Abnormal ECG Data", System.currentTimeMillis()));
+                }
+            }
+        }
     }
 
     /**
@@ -47,6 +136,6 @@ public class AlertGenerator {
      * @param alert the alert object containing details about the alert condition
      */
     private void triggerAlert(Alert alert) {
-        // Implementation might involve logging the alert or notifying staff
+        System.out.println("Alert triggered: " + alert.getCondition() + " for patient ID: " + alert.getPatientId());
     }
 }
