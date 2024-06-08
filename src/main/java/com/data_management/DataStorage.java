@@ -20,6 +20,7 @@ public class DataStorage {
      * structure.
      */
     public DataStorage() {
+
         this.patientMap = new HashMap<>();
     }
 
@@ -72,6 +73,7 @@ public class DataStorage {
      * @return a list of all patients
      */
     public List<Patient> getAllPatients() {
+
         return new ArrayList<>(patientMap.values());
     }
 
