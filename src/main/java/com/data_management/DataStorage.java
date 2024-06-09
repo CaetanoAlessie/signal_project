@@ -1,6 +1,7 @@
 package com.data_management;
 
-import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +16,13 @@ import com.alerts.AlertGenerator;
  */
 public class DataStorage {
     private Map<Integer, Patient> patientMap; // Stores patient objects indexed by their unique patient ID.
+    private MyWebSocketClient webSocketClient;
 
     /**
      * Constructs a new instance of DataStorage, initializing the underlying storage
      * structure.
      */
     public DataStorage() {
-
         this.patientMap = new HashMap<>();
     }
 
@@ -74,7 +75,6 @@ public class DataStorage {
      * @return a list of all patients
      */
     public List<Patient> getAllPatients() {
-
         return new ArrayList<>(patientMap.values());
     }
 
@@ -82,25 +82,11 @@ public class DataStorage {
      * The main method for the DataStorage class.
      * Initializes the system, reads data into storage, and continuously monitors
      * and evaluates patient data.
-     * 
+     *
      * @param args command line arguments
      */
     public static void main(String[] args) {
-        // DataReader is not defined in this scope, should be initialized appropriately.
-        // DataReader reader = new SomeDataReaderImplementation("path/to/data");
         DataStorage storage = new DataStorage();
-
-        // Assuming the reader has been properly initialized and can read data into the
-        // storage
-        // reader.readData(storage);
-
-        FileDataReader reader = new FileDataReader("example/directory");
-        try {
-            reader.readData(storage);
-        } catch (IOException e) {
-            System.err.println("Error reading data: " + e.getMessage());
-            e.printStackTrace();
-        }
 
         // Example of using DataStorage to retrieve and print records for a patient
         List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);
