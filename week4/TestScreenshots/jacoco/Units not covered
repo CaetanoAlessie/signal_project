@@ -1,0 +1,5 @@
+I didn't test the com.cardio_generator directory because I used my own data generation when testing for the com.alert and
+and com.data_management class as it allows me to be more flexible with my testing and test specific cases rather than have 
+generated data from the com.cardio_generator class. I am able to more precisely cover edge cases in the unit tests. However, 
+testing the com.cardio_generator as well could make the whole system more reliable and trustworthy as we are sure that in any
+case the system will do what is asked of it.
