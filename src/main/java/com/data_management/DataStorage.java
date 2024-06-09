@@ -1,5 +1,6 @@
 package com.data_management;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +93,14 @@ public class DataStorage {
         // Assuming the reader has been properly initialized and can read data into the
         // storage
         // reader.readData(storage);
+
+        FileDataReader reader = new FileDataReader("directory");
+        try {
+            reader.readData(storage);
+        } catch (IOException e) {
+            System.err.println("Error reading data: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         // Example of using DataStorage to retrieve and print records for a patient
         List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);

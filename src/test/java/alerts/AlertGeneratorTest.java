@@ -100,7 +100,7 @@ public class AlertGeneratorTest {
         alertGenerator.evaluateData(patient);
 
         List<Alert> alerts = alertGenerator.getAlerts();
-        assertEquals(1, alerts.size(), "Rapid drop in saturation alert failed");
+        assertEquals(2, alerts.size(), "Rapid drop in saturation alert failed"); //expect 2 because we get low saturation alert and rapid drop
         assertEquals("Rapid drop in saturation alert", alerts.get(0).getCondition());
 
         assertTrue(outContent.toString().contains("Alert triggered: Rapid drop in saturation alert for patient ID: 1"));

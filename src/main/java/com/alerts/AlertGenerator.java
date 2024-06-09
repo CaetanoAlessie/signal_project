@@ -41,9 +41,10 @@ public class AlertGenerator {
      * @param patient the patient data to evaluate for alert conditions
      */
     public void evaluateData(Patient patient) {
-        checkBloodPressureAlerts(patient);
-        checkBloodSaturationAlerts(patient);
         checkHypotensiveHypoxemiaAlert(patient);
+        checkRapidDropAlerts(patient);
+        checkBloodSaturationAlerts(patient);
+        checkBloodPressureAlerts(patient);
         checkECGAlerts(patient);
     }
 
@@ -92,6 +93,29 @@ public class AlertGenerator {
 
     private void checkBloodSaturationAlerts(Patient patient) {
         List<PatientRecord> records = dataStorage.getRecords(patient.getId(), 0, Long.MAX_VALUE);
+        boolean lowBloodPressure = false;
+
+        for (PatientRecord record : records) {
+            if (record.getRecordType().equals("Blood pressure") && record.getMeasurementValue() < 90) {
+                lowBloodPressure = true;
+                break;
+            }
+        }
+
+        if (!lowBloodPressure) {
+            for (PatientRecord record : records) {
+                if (record.getRecordType().equals("Blood saturation")) {
+                    double currentValue = record.getMeasurementValue();
+                    if (currentValue < 92) {
+                        triggerAlert(new Alert(String.valueOf(patient.getId()), "Low saturation alert", System.currentTimeMillis()));
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkRapidDropAlerts(Patient patient) {
+        List<PatientRecord> records = dataStorage.getRecords(patient.getId(), 0, Long.MAX_VALUE);
         double previousValue = -1;
         long previousTimestamp = -1;
 
@@ -99,9 +123,7 @@ public class AlertGenerator {
             if (record.getRecordType().equals("Blood saturation")) {
                 double currentValue = record.getMeasurementValue();
                 long currentTimestamp = record.getTimestamp();
-                if (currentValue < 92) {
-                    triggerAlert(new Alert(String.valueOf(patient.getId()), "Low saturation alert", System.currentTimeMillis()));
-                }
+
                 if (previousValue != -1 && (currentTimestamp - previousTimestamp) <= 10 * 60 * 1000L) {
                     double drop = previousValue - currentValue;
                     if (drop >= 5) {
@@ -122,16 +144,19 @@ public class AlertGenerator {
         boolean lowSaturation = false;
 
         for (PatientRecord record : records) {
-            if (record.getRecordType().equals("Blood pressure") && record.getMeasurementValue() < 90) {
-                lowBloodPressure = true;
+            if (record.getRecordType().equals("Blood pressure")) {
+                if (record.getMeasurementValue() < 90) {
+                    lowBloodPressure = true;
+                }
             }
-            if (record.getRecordType().equals("Blood saturation") && record.getMeasurementValue() < 92) {
-                lowSaturation = true;
+            if (record.getRecordType().equals("Blood saturation")) {
+                if (record.getMeasurementValue() < 92) {
+                    lowSaturation = true;
+                }
             }
-        }
-
-        if (lowBloodPressure && lowSaturation) {
-            triggerAlert(new Alert(String.valueOf(patient.getId()), "Hypotensive hypoxemia alert", System.currentTimeMillis()));
+            if (lowBloodPressure && lowSaturation) {
+                triggerAlert(new Alert(String.valueOf(patient.getId()), "Hypotensive hypoxemia alert", System.currentTimeMillis()));
+            }
         }
     }
 
