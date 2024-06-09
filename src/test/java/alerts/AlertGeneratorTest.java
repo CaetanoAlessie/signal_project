@@ -28,9 +28,9 @@ public class AlertGeneratorTest {
 
     @Test
     public void testEvaluateIncreasingTrendAlert() {
-        dataStorage.addPatientData(1, 110, "Systolic pressure", 1627846187000L);
-        dataStorage.addPatientData(1, 121, "Systolic pressure", 1627846287000L);
-        dataStorage.addPatientData(1, 133, "Systolic pressure", 1627846387000L);
+        dataStorage.addPatientData(1, 110, "Systolic pressure", System.currentTimeMillis());
+        dataStorage.addPatientData(1, 121, "Systolic pressure", System.currentTimeMillis() + 1000);
+        dataStorage.addPatientData(1, 133, "Systolic pressure", System.currentTimeMillis() + 2000);
 
         Patient patient = dataStorage.getAllPatients().get(0);
         alertGenerator.evaluateData(patient);
@@ -44,9 +44,9 @@ public class AlertGeneratorTest {
 
     @Test
     public void testEvaluateDecreasingTrendAlert() {
-        dataStorage.addPatientData(1, 140, "Systolic pressure", 1627846187000L);
-        dataStorage.addPatientData(1, 129, "Systolic pressure", 1627846287000L);
-        dataStorage.addPatientData(1, 117, "Systolic pressure", 1627846387000L);
+        dataStorage.addPatientData(1, 140, "Systolic pressure", System.currentTimeMillis());
+        dataStorage.addPatientData(1, 129, "Systolic pressure", System.currentTimeMillis() + 1000);
+        dataStorage.addPatientData(1, 117, "Systolic pressure", System.currentTimeMillis() + 2000);
 
         Patient patient = dataStorage.getAllPatients().get(0);
         alertGenerator.evaluateData(patient);
@@ -60,8 +60,8 @@ public class AlertGeneratorTest {
 
     @Test
     public void testEvaluateCriticalThresholdAlert() {
-        dataStorage.addPatientData(1, 190, "Systolic pressure", 1627846187000L);
-        dataStorage.addPatientData(1, 55, "Diastolic pressure", 1627846287000L);
+        dataStorage.addPatientData(1, 190, "Systolic pressure", System.currentTimeMillis());
+        dataStorage.addPatientData(1, 55, "Diastolic pressure", System.currentTimeMillis() + 1000);
 
         Patient patient = dataStorage.getAllPatients().get(0);
         alertGenerator.evaluateData(patient);
@@ -76,7 +76,7 @@ public class AlertGeneratorTest {
 
     @Test
     public void testEvaluateLowSaturationAlert() {
-        dataStorage.addPatientData(1, 91, "Blood saturation", 1627846187000L);
+        dataStorage.addPatientData(1, 91, "Blood saturation", System.currentTimeMillis());
 
         Patient patient = dataStorage.getAllPatients().get(0);
         alertGenerator.evaluateData(patient);
@@ -106,8 +106,8 @@ public class AlertGeneratorTest {
 
     @Test
     public void testEvaluateHypotensiveHypoxemiaAlert() {
-        dataStorage.addPatientData(1, 89, "Blood pressure", 1627846187000L);
-        dataStorage.addPatientData(1, 91, "Blood saturation", 1627846187000L);
+        dataStorage.addPatientData(1, 89, "Blood pressure", System.currentTimeMillis());
+        dataStorage.addPatientData(1, 91, "Blood saturation", System.currentTimeMillis());
 
         Patient patient = dataStorage.getAllPatients().get(0);
         alertGenerator.evaluateData(patient);
@@ -121,17 +121,17 @@ public class AlertGeneratorTest {
 
     @Test
     public void testEvaluateAbnormalECGData() {
-        dataStorage.addPatientData(1, 1.0, "ECG", 1627846187000L);
-        dataStorage.addPatientData(1, 1.1, "ECG", 1627846287000L);
-        dataStorage.addPatientData(1, 1.2, "ECG", 1627846387000L);
-        dataStorage.addPatientData(1, 1.3, "ECG", 1627846487000L);
-        dataStorage.addPatientData(1, 1.4, "ECG", 1627846587000L);
-        dataStorage.addPatientData(1, 1.5, "ECG", 1627846687000L);
-        dataStorage.addPatientData(1, 1.6, "ECG", 1627846787000L);
-        dataStorage.addPatientData(1, 1.7, "ECG", 1627846887000L);
-        dataStorage.addPatientData(1, 1.8, "ECG", 1627846987000L);
-        dataStorage.addPatientData(1, 1.9, "ECG", 1627847087000L);
-        dataStorage.addPatientData(1, 5.0, "ECG", 1627847187000L);
+        dataStorage.addPatientData(1, 1.0, "ECG", System.currentTimeMillis());
+        dataStorage.addPatientData(1, 1.1, "ECG", System.currentTimeMillis() + 1000);
+        dataStorage.addPatientData(1, 1.2, "ECG", System.currentTimeMillis() + 2000);
+        dataStorage.addPatientData(1, 1.3, "ECG", System.currentTimeMillis() + 3000);
+        dataStorage.addPatientData(1, 1.4, "ECG", System.currentTimeMillis() + 4000);
+        dataStorage.addPatientData(1, 1.5, "ECG", System.currentTimeMillis() + 5000);
+        dataStorage.addPatientData(1, 1.6, "ECG", System.currentTimeMillis() + 6000);
+        dataStorage.addPatientData(1, 1.7, "ECG", System.currentTimeMillis() + 7000);
+        dataStorage.addPatientData(1, 1.8, "ECG", System.currentTimeMillis() + 8000);
+        dataStorage.addPatientData(1, 1.9, "ECG", System.currentTimeMillis() + 9000);
+        dataStorage.addPatientData(1, 5.0, "ECG", System.currentTimeMillis() + 10000);
 
         Patient patient = dataStorage.getAllPatients().get(0);
         alertGenerator.evaluateData(patient);

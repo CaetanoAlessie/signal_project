@@ -41,7 +41,7 @@ class DataStorageTest {
 
     @Test
     void testAddPatientData() {
-        dataStorage.addPatientData(2, 120.0, "Blood pressure", 1714376789052L);
+        dataStorage.addPatientData(2, 120.0, "Blood pressure", System.currentTimeMillis());
         List<PatientRecord> records = dataStorage.getRecords(2, 0, Long.MAX_VALUE);
         assertEquals(1, records.size());
         assertEquals(120.0, records.get(0).getMeasurementValue());

@@ -16,7 +16,7 @@ import com.alerts.AlertGenerator;
  */
 public class DataStorage {
     private Map<Integer, Patient> patientMap; // Stores patient objects indexed by their unique patient ID.
-    private MyWebSocketClient webSocketClient;
+    private static DataStorage instance;
 
     /**
      * Constructs a new instance of DataStorage, initializing the underlying storage
@@ -24,6 +24,14 @@ public class DataStorage {
      */
     public DataStorage() {
         this.patientMap = new HashMap<>();
+    }
+
+
+    public static DataStorage getInstance() {
+        if (instance == null) {
+            instance = new DataStorage();
+        }
+        return instance;
     }
 
     /**
@@ -76,6 +84,10 @@ public class DataStorage {
      */
     public List<Patient> getAllPatients() {
         return new ArrayList<>(patientMap.values());
+    }
+
+    public Patient getPatientById(int patientId) {
+        return patientMap.get(patientId);
     }
 
     /**
