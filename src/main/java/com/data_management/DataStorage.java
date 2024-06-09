@@ -94,7 +94,7 @@ public class DataStorage {
         // storage
         // reader.readData(storage);
 
-        FileDataReader reader = new FileDataReader("directory");
+        FileDataReader reader = new FileDataReader("example/directory");
         try {
             reader.readData(storage);
         } catch (IOException e) {

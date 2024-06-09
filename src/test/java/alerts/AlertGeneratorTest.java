@@ -16,7 +16,6 @@ public class AlertGeneratorTest {
     private DataStorage dataStorage;
     private AlertGenerator alertGenerator;
     private ByteArrayOutputStream outContent;
-    private PrintStream originalOut;
 
     @BeforeEach
     public void setUp() {
@@ -24,7 +23,6 @@ public class AlertGeneratorTest {
         alertGenerator = new AlertGenerator(dataStorage);
 
         outContent = new ByteArrayOutputStream();
-        originalOut = System.out;
         System.setOut(new PrintStream(outContent));
     }
 
